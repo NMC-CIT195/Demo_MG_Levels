@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B0B6E76-EF98-4020-840B-D4DE7BC8125C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Demo_MG_Levels</RootNamespace>
+    <AssemblyName>Demo_MG_Levels</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <MonoGameContentBuilderExe>
+    </MonoGameContentBuilderExe>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Windows\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Windows\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Game1.cs" />
+    <Compile Include="MazeGame.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wall.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Artwork\player.png" />
+    <Content Include="Artwork\wall.png" />
+    <Content Include="Content\background_info_area.jpg" />
+    <Content Include="Content\background_tile.jpg" />
+    <Content Include="Content\player_down.png" />
+    <Content Include="Content\player_left.png" />
+    <Content Include="Content\player_right.png" />
+    <Content Include="Content\player_up.png" />
+    <Content Include="Content\wall.png" />
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Artwork\Sprites.pdn" />
+    <None Include="Content\bin\Windows\death_ball.xnb" />
+    <None Include="Content\bin\Windows\green_jewel.xnb" />
+    <None Include="Content\bin\Windows\player_down.xnb" />
+    <None Include="Content\bin\Windows\player_left.xnb" />
+    <None Include="Content\bin\Windows\player_right.xnb" />
+    <None Include="Content\bin\Windows\player_up.xnb" />
+    <None Include="Content\bin\Windows\score_font.xnb" />
+    <None Include="Content\bin\Windows\wall.xnb" />
+    <None Include="Content\obj\Windows\.mgcontent" />
+    <None Include="Content\obj\Windows\death_ball.mgcontent" />
+    <None Include="Content\obj\Windows\green_jewel.mgcontent" />
+    <None Include="Content\obj\Windows\player_down.mgcontent" />
+    <None Include="Content\obj\Windows\player_left.mgcontent" />
+    <None Include="Content\obj\Windows\player_right.mgcontent" />
+    <None Include="Content\obj\Windows\player_up.mgcontent" />
+    <None Include="Content\obj\Windows\ScoreFont.mgcontent" />
+    <None Include="Content\obj\Windows\score_font.mgcontent" />
+    <None Include="Content\obj\Windows\wall.mgcontent" />
+    <None Include="Content\score_font.spritefont" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
