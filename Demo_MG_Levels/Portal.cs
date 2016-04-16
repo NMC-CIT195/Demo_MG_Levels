@@ -19,8 +19,9 @@ namespace Demo_MG_Levels
         private Texture2D _sprite;
         private Vector2 _position;
         private Vector2 _center;
-        private Rectangle _boundingRectangle;       
-        
+        private Rectangle _boundingRectangle;
+        private float rotation;
+
         private bool _active;
 
         #endregion
@@ -55,7 +56,7 @@ namespace Demo_MG_Levels
             get { return _center; }
             set { _center = value; }
         }
-        
+
         public Rectangle BoundingRectangle
         {
             get { return _boundingRectangle; }
@@ -106,10 +107,12 @@ namespace Demo_MG_Levels
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            rotation += .1F;
+
             // only draw the Portal if it is active
             if (_active)
             {
-                spriteBatch.Draw(_sprite, _position, Color.White);
+                spriteBatch.Draw(_sprite, _center, null, Color.White, rotation, new Vector2(32, 32), 1, SpriteEffects.None, 0);
             }
         }
 
