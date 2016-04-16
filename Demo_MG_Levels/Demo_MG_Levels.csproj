@@ -43,6 +43,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Portal.cs" />
     <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,10 +58,12 @@
     <Content Include="Artwork\wall.png" />
     <Content Include="Content\background_info_area.jpg" />
     <Content Include="Content\background_tile.jpg" />
+    <Content Include="Content\obj\portal.png" />
     <Content Include="Content\player_down.png" />
     <Content Include="Content\player_left.png" />
     <Content Include="Content\player_right.png" />
     <Content Include="Content\player_up.png" />
+    <Content Include="Content\splash_screen.jpg" />
     <Content Include="Content\wall.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>

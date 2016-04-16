@@ -12,11 +12,19 @@ namespace Demo_MG_Levels
     public enum GameAction
     {
         None,
+        StartGame,
         PlayerRight,
         PlayerLeft,
         PlayerUp,
         PlayerDown,
         Quit
+    }
+
+    public enum GameState
+    {
+        OpeningScreen,
+        Playing,
+        ClosingScreen
     }
 
     /// <summary>
@@ -47,8 +55,14 @@ namespace Demo_MG_Levels
         public static int WINDOW_WIDTH = MAP_CELL_COLUMN_COUNT * CELL_WIDTH;
         public static int WINDOW_HEIGHT = MAP_CELL_ROW_COUNT * CELL_HEIGHT + GAME_INFO_DISPLAY_HEIGHT;
 
+        // set game parameters
+        public static int NUMBER_OF_LEVELS = 2;
+
         // level state
         private bool initializeNextLevel = true;
+
+        // game state
+        private GameState currentGameState = GameState.OpeningScreen;
 
         // wall objects
         private List<Wall> walls;
@@ -59,6 +73,9 @@ namespace Demo_MG_Levels
         // background for the info area
         private Texture2D backgroundInfoArea;
 
+        // opening screen
+        private Texture2D openingScreen;
+
         // game status variables
         private int level = 1;
         private int health = 100;
@@ -67,6 +84,9 @@ namespace Demo_MG_Levels
 
         // background tile
         private Texture2D backgroundTile;
+
+        // portal object
+        private Portal portal;
 
         // map array
         private int[,] map;
@@ -132,11 +152,14 @@ namespace Demo_MG_Levels
             // load font for info screen
             infoFont = Content.Load<SpriteFont>("info_font");
 
+            // load opening screen
+            openingScreen = Content.Load<Texture2D>("splash_screen");
+
             // load background graphics
             backgroundTile = Content.Load<Texture2D>("background_tile");
             backgroundInfoArea = Content.Load<Texture2D>("background_info_area");
 
-            // Note: wall and player sprites loaded when instantiated
+            // Note: wall, portal, and player sprites loaded when instantiated
         }
 
         /// <summary>
@@ -155,16 +178,28 @@ namespace Demo_MG_Levels
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            ManageGameLevel();
-
-            // get the player's current action based on a keyboard event
             playerGameAction = GetKeyboardEvents();
-
-            ManageGameStatus();
-
             ManageGameActions(playerGameAction);
 
-            ManageGameObjects();
+            switch (currentGameState)
+            {
+                case GameState.OpeningScreen:
+                    break;
+
+                case GameState.Playing:
+                    ManageGameLevel();
+                    ManageGameStatus();
+                    ManageGameObjects();
+                    break;
+
+                case GameState.ClosingScreen:
+                    break;
+
+                default:
+                    break;
+            }
+
+
 
             base.Update(gameTime);
         }
@@ -175,19 +210,29 @@ namespace Demo_MG_Levels
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
-            DrawBackground();
+            switch (currentGameState)
+            {
+                case GameState.OpeningScreen:
+                    DrawOpeningScreen();
+                    break;
 
-            DrawWalls();
+                case GameState.Playing:
+                    DrawBackground();
+                    DrawGameObjects();
+                    DrawGameInfo();
+                    player.Draw(spriteBatch);
+                    break;
 
-            DrawGameObjects();
+                case GameState.ClosingScreen:
+                    break;
 
-            DrawGameInfo();
-
-            player.Draw(spriteBatch);
+                default:
+                    break;
+            }
 
             spriteBatch.End();
 
@@ -219,6 +264,12 @@ namespace Demo_MG_Levels
                         player.SpeedHorizontal = 5;
                         player.SpeedVertical = 5;
 
+                        // set the player's starting position
+                        player.Position = new Vector2(3 * CELL_WIDTH, CELL_HEIGHT);
+
+                        // reset wall objects from previous level
+                        walls = new List<Wall>();
+
                         // add everything to Level 1
                         BuildMapLevel2();
 
@@ -233,7 +284,20 @@ namespace Demo_MG_Levels
 
         private void ManageGameStatus()
         {
-
+            // has player collided with the portal
+            if (player.BoundingRectangle.Intersects(portal.BoundingRectangle))
+            {
+                if (level != NUMBER_OF_LEVELS)
+                {
+                    level++;
+                    initializeNextLevel = true;
+                }
+                else
+                {
+                    // TODO display closing screen
+                    Environment.Exit(1);
+                }
+            }
         }
 
         /// <summary>
@@ -245,6 +309,11 @@ namespace Demo_MG_Levels
             switch (playerGameAction)
             {
                 case GameAction.None:
+                    break;
+
+                // start game
+                case GameAction.StartGame:
+                    currentGameState = GameState.Playing;
                     break;
 
                 // move player right
@@ -281,6 +350,7 @@ namespace Demo_MG_Levels
                     }
                     break;
 
+                // move player down
                 case GameAction.PlayerDown:
                     player.PlayerDirection = Player.Direction.Down;
 
@@ -353,6 +423,10 @@ namespace Demo_MG_Levels
             else if (CheckKey(Keys.Down) == true)
             {
                 playerGameAction = GameAction.PlayerDown;
+            }
+            else if (CheckKey(Keys.Enter) == true)
+            {
+                playerGameAction = GameAction.StartGame;
             }
             else if (CheckKey(Keys.Escape) == true)
             {
@@ -487,13 +561,13 @@ namespace Demo_MG_Levels
             map = new int[,]
             {
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                { 1, 0, 0, 0, 0, 0, 2, 0, 1 },
-                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
-                { 1, 2, 1, 1, 0, 1, 1, 0, 1 },
-                { 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 1 },
                 { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
                 { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
-                { 1, 0, 0, 0, 2, 0, 0, 0, 1 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 3 },
+                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
+                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 1 },
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1 }
             };
 
@@ -505,6 +579,12 @@ namespace Demo_MG_Levels
                     if (map[row, column] == 1)
                     {
                         walls.Add(new Wall(Content, "wall", new Vector2(column * CELL_HEIGHT, row * CELL_WIDTH)));
+                    }
+
+                    // add portal
+                    if (map[row, column] == 3)
+                    {
+                        portal = new Portal(Content, "portal", new Vector2(column * CELL_HEIGHT, row * CELL_WIDTH));
                     }
                 }
             }
@@ -520,13 +600,13 @@ namespace Demo_MG_Levels
             map = new int[,]
             {
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-                { 1, 0, 2, 0, 0, 0, 0, 0, 1 },
-                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
-                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
                 { 1, 0, 0, 0, 0, 0, 0, 0, 1 },
                 { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
                 { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
-                { 1, 2, 0, 0, 0, 0, 0, 2, 1 },
+                { 3, 0, 0, 0, 0, 0, 0, 0, 1 },
+                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
+                { 1, 0, 1, 1, 0, 1, 1, 0, 1 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 1 },
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1 }
             };
 
@@ -538,6 +618,12 @@ namespace Demo_MG_Levels
                     if (map[row, column] == 1)
                     {
                         walls.Add(new Wall(Content, "wall", new Vector2(column * CELL_HEIGHT, row * CELL_WIDTH)));
+                    }
+
+                    // add portal
+                    if (map[row, column] == 3)
+                    {
+                        portal = new Portal(Content, "portal", new Vector2(column * CELL_HEIGHT, row * CELL_WIDTH));
                     }
                 }
             }
@@ -564,17 +650,17 @@ namespace Demo_MG_Levels
             spriteBatch.Draw(backgroundInfoArea, new Vector2(0, MAP_CELL_ROW_COUNT * CELL_HEIGHT), Color.White);
         }
 
+
         /// <summary>
-        /// draw all walls on map
+        /// draw the opening screen
         /// </summary>
-        /// <param name="spriteBatch">spriteBatch object</param>
-        private void DrawWalls()
+        /// <param name="spriteBatch"></param>
+        private void DrawOpeningScreen()
         {
-            foreach (Wall wall in walls)
-            {
-                wall.Draw(spriteBatch);
-            }
+            // draw opening screen
+            spriteBatch.Draw(openingScreen, new Vector2(0, 0), Color.White);
         }
+
 
         /// <summary>
         /// draw all game objects on map
@@ -582,7 +668,13 @@ namespace Demo_MG_Levels
         /// <param name="spriteBatch">spriteBatch object</param>
         private void DrawGameObjects()
         {
+            // draw walls
+            foreach (Wall wall in walls)
+            {
+                wall.Draw(spriteBatch);
+            }
 
+            portal.Draw(spriteBatch);
         }
 
 
