@@ -74,14 +74,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Artwork\Sprites.pdn" />
+    <None Include="Content\bin\Windows\background_info_area.xnb" />
+    <None Include="Content\bin\Windows\background_tile.xnb" />
     <None Include="Content\bin\Windows\death_ball.xnb" />
     <None Include="Content\bin\Windows\green_jewel.xnb" />
+    <None Include="Content\bin\Windows\info_font.xnb" />
     <None Include="Content\bin\Windows\player_down.xnb" />
     <None Include="Content\bin\Windows\player_left.xnb" />
     <None Include="Content\bin\Windows\player_right.xnb" />
     <None Include="Content\bin\Windows\player_up.xnb" />
+    <None Include="Content\bin\Windows\portal.xnb" />
+    <None Include="Content\bin\Windows\red_jewel.xnb" />
     <None Include="Content\bin\Windows\score_font.xnb" />
+    <None Include="Content\bin\Windows\splash_screen.xnb" />
     <None Include="Content\bin\Windows\wall.xnb" />
+    <None Include="Content\info_font.spritefont" />
     <None Include="Content\obj\Windows\.mgcontent" />
     <None Include="Content\obj\Windows\death_ball.mgcontent" />
     <None Include="Content\obj\Windows\green_jewel.mgcontent" />
