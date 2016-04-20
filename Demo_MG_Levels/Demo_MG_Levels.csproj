@@ -63,6 +63,8 @@
     <Content Include="Content\player_left.png" />
     <Content Include="Content\player_right.png" />
     <Content Include="Content\player_up.png" />
+    <Content Include="Content\portal.png" />
+    <Content Include="Content\red_jewel.png" />
     <Content Include="Content\splash_screen.jpg" />
     <Content Include="Content\wall.png" />
     <Content Include="Icon.ico" />
